@@ -1,7 +1,6 @@
 import React from "react";
 import DayCard from "./DayCard";
 import DegreeToggle from "./DegreeToggle";
-import { WEATHER_API, WEATHER_URL, WEATHER_URL2 } from "../constants";
 import WeatherLookup from "./WeatherLookup";
 import WeatherService from "../services";
 
