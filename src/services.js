@@ -1,10 +1,10 @@
 import { WEATHER_URL, WEATHER_URL2, WEATHER_API } from "./constants";
 
 class WeatherService {
-  async fetchFiveDayForecast() {
+  async fetchFiveDayForecast(zip) {
     return new Promise(async (success, fail) => {
      try {
-      const response = await fetch(`${WEATHER_URL}99207${WEATHER_URL2}${WEATHER_API}`)
+      const response = await fetch(`${WEATHER_URL}${zip}${WEATHER_URL2}${WEATHER_API}`)
       if (response.ok) {
         const json = await response.json()
         const data = json.list
@@ -19,7 +19,9 @@ class WeatherService {
           desc: item.weather[0].description,
           windSpeed: item.wind.speed,
         }));
-        success( {response, data})
+        const city = json.city.name
+        const country = json.city.country
+        success( {response, data, city, country})
       }else {
         fail({error: "invalid http request"})
       }

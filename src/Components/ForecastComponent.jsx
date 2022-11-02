@@ -15,16 +15,19 @@ class ForecastComponent extends React.Component {
     country: "",
     degreeType: "fahrenheit",
     speedType: "mph",
-    zip: "",
+    zip: "99207",
   };
   async componentDidMount() {
+    const { zip } = this.state;
     this.setState({ loading: true });
-    weather.fetchFiveDayForecast().then(
+    weather.fetchFiveDayForecast(zip).then(
       (res) => {
         if (res && res.response.ok) {
           this.setState({
             data: res.data,
             loading: false,
+            city: res.city,
+            country: res.country,
           });
         } else {
           this.setState({ loading: false });
@@ -40,78 +43,30 @@ class ForecastComponent extends React.Component {
     );
   }
 
-  //     try {
-  //       const response = await fetch(
-  //         `${WEATHER_URL}${zip}${WEATHER_URL2}${WEATHER_API}`
-  //       );
-  //       if (response.ok) {
-  //         const json = await response.json();
-  //         const data = json.list
-  //           .filter((day) => day.dt_txt.includes("00:00:00"))
-  //           .map((item) => ({
-  //             temp: item.main.temp,
-  //             feelsLike: item.main.feels_like,
-  //             dt: item.dt,
-  //             date: item.dt_txt,
-  //             humidity: item.main.humidity,
-  //             imgId: item.weather[0].id,
-  //             desc: item.weather[0].description,
-  //             windSpeed: item.wind.speed,
-  //           }));
-  //         this.setState({
-  //           data,
-  //           loading: false,
-  //           city: json.city.name,
-  //           country: json.city.country,
-  //         });
-  //       } else {
-  //         this.setState({
-  //           loading: false,
-  //           error: true,
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error("there was an error", err);
-  //     }
-  //   }
-  // }
-
   async updateForecast(zip) {
     if (zip.length === 5) {
       this.setState({ loading: true });
-      try {
-        const response = await fetch(
-          `${WEATHER_URL}${zip}${WEATHER_URL2}${WEATHER_API}`
-        );
-        if (response.ok) {
-          const json = await response.json();
-          const data = json.list
-            .filter((day) => day.dt_txt.includes("00:00:00"))
-            .map((item) => ({
-              temp: item.main.temp,
-              feelsLike: item.main.feels_like,
-              dt: item.dt,
-              date: item.dt_txt,
-              humidity: item.main.humidity,
-              imgId: item.weather[0].id,
-              desc: item.weather[0].description,
-              windSpeed: item.wind.speed,
-            }));
-          this.setState({
-            data,
-            loading: false,
-            city: json.city.name,
-            country: json.city.country,
-          });
-        } else {
+      weather.fetchFiveDayForecast(zip).then(
+        (res) => {
+          if (res && res.response.ok) {
+            this.setState({
+              data: res.data,
+              loading: false,
+              city: res.city,
+              country: res.country,
+            });
+          } else {
+            this.setState({ loading: false });
+          }
+        },
+        (error) => {
+          console.log(error);
           this.setState({
             loading: false,
             error: true,
           });
         }
-      } catch (err) {
-        console.error("there was an error", err);
-      }
+      );
     }
   }
 
