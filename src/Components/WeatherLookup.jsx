@@ -10,7 +10,7 @@ const WeatherLookup = ({ lookupNewLocation, updateSpeedType }) => {
       <div className="form-check form-check-inline">
         <select
           name="speedToggle"
-          id=""
+          id="a"
           className="form-check-input"
           onChange={updateSpeedType}
           defaultChecked="mph"
