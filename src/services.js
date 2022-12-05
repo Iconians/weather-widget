@@ -3,10 +3,11 @@ import { WEATHER_URL, WEATHER_URL2, WEATHER_API } from "./constants";
 class WeatherService {
   async fetchFiveDayForecast(zip) {
     return new Promise(async (success, fail) => {
-     try {
-      const response = await fetch(`${WEATHER_URL}${zip}${WEATHER_URL2}${WEATHER_API}`)
+      try {
+      const response = await fetch(`${WEATHER_URL}${zip}${WEATHER_URL2}${WEATHER_API}`)     
       if (response.ok) {
         const json = await response.json()
+        console.log(json);
         const data = json.list
         .filter((day) => day.dt_txt.includes("00:00:00"))
         .map((item) => ({
